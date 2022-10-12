@@ -89,15 +89,11 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  uint32_t pulse_width_1 = 10000; //ARR*0.25
-  uint32_t pulse_width_2 = 30000; //ARR*0.75
 
   HAL_TIM_Base_Start(&htim3);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
 
-  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pulse_width_1);
-  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, pulse_width_2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -192,7 +188,7 @@ static void MX_TIM3_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
+  sConfigOC.Pulse = 10000-1;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
@@ -200,6 +196,7 @@ static void MX_TIM3_Init(void)
     Error_Handler();
   }
   sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
+  sConfigOC.Pulse = 30000-1;
   if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
   {
     Error_Handler();
